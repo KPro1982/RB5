@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{E9916B01E71D4B82}RB5/Scripts/Data/RBICON.edds"
+ Author "office"
+ ChangeDate 1068739940
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "RBICON.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

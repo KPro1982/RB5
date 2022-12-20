@@ -1,0 +1,70 @@
+class Konfig
+{
+
+	protected static string ConfigPATH = "$profile:\\TemplateMod\\Config_settings.json";
+	private static const string configRoot = "$profile:\\TemplateMod\\";	
+/////////////////////////////////////////////////////////////////////////////////////////////////////	
+// Variables to save go here
+//
+	string ConfigVersion = "1";
+	string ConfigString = "Hello World!";
+   	int search_radius;
+    int max_containers;
+    int max_locks; 
+  	int enable_locktracking;
+  	int enable_containertracking;
+  	ref array<ref string> containerTypes;
+  	ref array<ref string> containerKits;
+	
+	
+// NonSerialed Variables that should not be saved go here
+	[NonSerialized()]
+	int ConfigInt = 1;
+
+	
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	void Load(){
+		Print("[TemplateMod] Loading Config");
+		if (GetGame().IsServer()){
+			
+			if (FileExist(configRoot)==0) // Save Directory Does not Exist
+	        {
+	            Print("[TemplateMod] '" + configRoot + "' does not exist, creating directory");
+	            MakeDirectory(configRoot);
+	        }
+			
+			if (FileExist(ConfigPATH)){ //If Config File exist load File
+			    JsonFileLoader<Konfig>.JsonLoadFile(ConfigPATH, this);
+				if (ConfigVersion != "1"){
+					ConfigVersion = "1";
+					Save();
+				}
+			}else{ //File does not exist create file
+				Save();
+			}
+		}
+	}
+	
+	void Save(){
+		JsonFileLoader<Konfig>.JsonSaveFile(ConfigPATH, this);
+	}
+
+		
+}
+ref Konfig m_Konfig;
+
+//Helper function to return Config
+static ref Konfig GetKonfig()
+{
+	if (!m_Konfig)
+	{
+		m_Konfig = new Konfig;
+			
+		if ( GetGame().IsServer() ){
+			m_GetKonfig().Load();
+		}
+	}
+	return m_Konfig;
+};
